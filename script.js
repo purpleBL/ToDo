@@ -1,3 +1,4 @@
+
 // Запрет зума iOS
 document.addEventListener('gesturestart', e => e.preventDefault());
 document.addEventListener('gesturechange', e => e.preventDefault());
@@ -21,6 +22,106 @@ const cancelDelete = document.getElementById('cancelDelete');
 
 let sortable = null;
 let dragEnabled = false;
+
+function saveTodosToStorage() {
+  const todos = [];
+  document.querySelectorAll('.todoWrapper').forEach(wrapper => {
+    const input = wrapper.querySelector('.todoInput').value;
+    const checked = wrapper.querySelector('.todoCheckbox').checked;
+    todos.push({ text: input, checked });
+  });
+  localStorage.setItem('todos', JSON.stringify(todos));
+}
+
+function loadTodosFromStorage() {
+  const todos = JSON.parse(localStorage.getItem('todos')) || [];
+  todos.reverse().forEach(todo => {
+    const wrapper = document.createElement('div');
+    wrapper.className = 'todoWrapper';
+
+    const deleteBtn = document.createElement('div');
+    deleteBtn.className = 'deleteBtn';
+    deleteBtn.textContent = 'Удалить';
+
+    const item = document.createElement('div');
+    item.className = 'todoItem';
+
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.className = 'todoCheckbox';
+    checkbox.checked = todo.checked;
+
+    const input = document.createElement('textarea');
+    input.className = 'todoInput';
+    input.placeholder = '';
+    input.value = todo.text;
+    input.rows = 1;
+
+    input.addEventListener('input', () => {
+      input.style.height = 'auto';
+      input.style.height = input.scrollHeight + 'px';
+      saveTodosToStorage();
+    });
+
+    checkbox.addEventListener('change', () => {
+      input.classList.toggle('checked', checkbox.checked);
+      input.readOnly = checkbox.checked || dragEnabled;
+      saveTodosToStorage();
+    });
+
+    const sortIcon = document.createElement('div');
+    sortIcon.className = 'sortIcon';
+    sortIcon.innerHTML = `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+           stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+           width="24" height="24" stroke-width="2">
+        <path d="M4 8l16 0"></path>
+        <path d="M4 16l16 0"></path>
+      </svg>
+    `;
+
+    if (checkbox.checked) {
+      input.classList.add('checked');
+      input.readOnly = true;
+    }
+
+    item.appendChild(checkbox);
+    item.appendChild(input);
+    item.appendChild(sortIcon);
+    wrapper.appendChild(item);
+    wrapper.appendChild(deleteBtn);
+    todoList.prepend(wrapper);
+
+    let startX = 0;
+    let isSwiped = false;
+    item.addEventListener('touchstart', e => {
+      if (dragEnabled) return;
+      startX = e.touches[0].clientX;
+      isSwiped = item.classList.contains('swiped');
+    });
+    item.addEventListener('touchmove', e => {
+      if (dragEnabled) return;
+      const currentX = e.touches[0].clientX;
+      const diff = startX - currentX;
+      if (diff > 50 && !isSwiped) {
+        item.classList.add('swiped');
+        isSwiped = true;
+      }
+      if (diff < -30 && isSwiped) {
+        item.classList.remove('swiped');
+        isSwiped = false;
+      }
+    });
+
+    deleteBtn.addEventListener('click', () => {
+      todoList.removeChild(wrapper);
+      updateButtonsState();
+      saveTodosToStorage();
+    });
+  });
+
+  updateButtonsState();
+}
 
 function updateButtonsState() {
   const hasItems = todoList.querySelectorAll('.todoWrapper').length > 0;
@@ -60,25 +161,26 @@ function createTodoItem() {
   checkbox.className = 'todoCheckbox';
 
   const input = document.createElement('textarea');
-input.className = 'todoInput';
-input.placeholder = '';
-input.rows = 1; // корректная установка строки
+  input.className = 'todoInput';
+  input.placeholder = '';
+  input.rows = 1;
 
-input.addEventListener('input', () => {
-  input.style.height = 'auto';
-  input.style.height = input.scrollHeight + 'px';
-});
+  input.addEventListener('input', () => {
+    input.style.height = 'auto';
+    input.style.height = input.scrollHeight + 'px';
+    saveTodosToStorage();
+  });
 
   const sortIcon = document.createElement('div');
-sortIcon.className = 'sortIcon';
-sortIcon.innerHTML = `
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-       stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-       width="24" height="24" stroke-width="2">
-    <path d="M4 8l16 0"></path>
-    <path d="M4 16l16 0"></path>
-  </svg>
-`;
+  sortIcon.className = 'sortIcon';
+  sortIcon.innerHTML = `
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+         stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+         width="24" height="24" stroke-width="2">
+      <path d="M4 8l16 0"></path>
+      <path d="M4 16l16 0"></path>
+    </svg>
+  `;
 
   item.appendChild(checkbox);
   item.appendChild(input);
@@ -117,11 +219,13 @@ sortIcon.innerHTML = `
   deleteBtn.addEventListener('click', () => {
     todoList.removeChild(wrapper);
     updateButtonsState();
+    saveTodosToStorage();
   });
 
   checkbox.addEventListener('change', () => {
     input.classList.toggle('checked', checkbox.checked);
     input.readOnly = checkbox.checked || dragEnabled;
+    saveTodosToStorage();
   });
 
   if (dragEnabled) {
@@ -129,6 +233,7 @@ sortIcon.innerHTML = `
   }
 
   updateButtonsState();
+  saveTodosToStorage();
 }
 
 addBtn.addEventListener('click', createTodoItem);
@@ -189,28 +294,8 @@ confirmDelete.addEventListener('click', () => {
   document.querySelectorAll('.todoWrapper').forEach(wrapper => wrapper.remove());
   confirmPopup.classList.add('hidden');
   updateButtonsState();
+  saveTodosToStorage();
 });
 
-// Вызываем на старте
 updateButtonsState();
-
-// === PWA и постоянное хранилище ===
-window.addEventListener('load', () => {
-  // Регистрация Service Worker
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/sw.js')
-      .then(registration => {
-        console.log('Service Worker зарегистрирован:', registration);
-      })
-      .catch(error => {
-        console.error('Ошибка при регистрации Service Worker:', error);
-      });
-  }
-
-  // Заявка на постоянное хранилище
-  if (navigator.storage && navigator.storage.persist) {
-    navigator.storage.persist().then(granted => {
-      console.log(granted ? 'Постоянное хранилище предоставлено.' : 'Постоянное хранилище не предоставлено.');
-    });
-  }
-});
+loadTodosFromStorage();
