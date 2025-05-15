@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>ToDo</title>
+	<link rel="manifest" href="manifest.json" />
+	<link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+</head>
+<body>
+  <div class="container">
+    <div class="topBar">
+      <button id="clearAllBtn">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" width="24" height="24" stroke-width="2">
+          <path d="M4 7h16"></path>
+          <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"></path>
+          <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"></path>
+          <path d="M10 12l4 4m0 -4l-4 4"></path>
+        </svg>
+      </button>
+      <button id="addBtn">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" width="24" height="24" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" stroke="currentColor">
+          <path d="M12 5l0 14"></path>
+          <path d="M5 12l14 0"></path>
+        </svg>
+      </button>
+      <button id="toggleDragBtn">
+				<svg class="sortIconDefault" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" width="24" height="24" stroke-width="2">
+  <path d="M3 9l4 -4l4 4m-4 -4v14"></path>
+  <path d="M21 15l-4 4l-4 -4m4 4v-14"></path>
+</svg>
+        <svg class="sortIconActive" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" width="24" height="24" stroke-width="2">
+          <path d="M5 12l5 5l10 -10"></path>
+        </svg>
+      </button>
+    </div>
+    <div id="todoList"></div>
+  </div>
+
+  <div id="confirmPopup" class="popup hidden">
+    <div class="popupBox">
+      <p>Удалить всё? 😬</p>
+      <div class="popupButtons">
+        <button id="confirmDelete">Удалить</button>
+        <button id="cancelDelete">Отмена</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
