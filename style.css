@@ -1,3 +1,22 @@
+:root {
+  --pri: MediumSlateBlue;
+	
+  --sec: #C2F970;
+
+  --txt-pri: #000;
+  --txt-inv: #fff;
+
+  --bg: #111212;
+	--bg-80: #111212CC;
+	--bg-sec: #212121;
+
+  --bd: #3A3E40;
+	
+	--del-bg: #291414;
+	--del-bd: #421A1A;
+	--del-txt: #CC2929;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -11,15 +30,14 @@ html, body {
   height: 100%;
   overflow: hidden;
   font-family: sans-serif;
-  background: #0C0D0D;
+  background: var(--bg);
   user-select: none;
-  touch-action: none;
+  touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
-  overscroll-behavior: none;
 }
 
 body {
-  background-image: radial-gradient(#1A1A1A 1px, transparent 1px);
+  background-image: radial-gradient(var(--bg-sec) 1px, transparent 1px);
   background-size: 20px 20px;
 }
 
@@ -33,13 +51,13 @@ body {
   position: fixed;
 	transform: translateX(-50%);
 	left: 50%;
-  bottom: 68px;
+  bottom: 20px;
   height: 80px;
-  background: #0C0D0DD9;
+  background: var(--bg-80);
   z-index: 10;
   backdrop-filter: blur(8px);
   border-radius: 26px;
-  border: 1px solid #3A3E40;
+  border: 1px solid var(--bd);
 }
 
 .topBar button {
@@ -63,13 +81,13 @@ body {
 
 #addBtn {
   background: none;
-  border: 1px solid #3A3E40;
+  border: 1px solid var(--bd);
   border-radius: 50%;
-	color: #0A84FF;
+	color: var(--pri);
 }
 
 #toggleDragBtn.sortingActive {
-  color: #C2F970;
+  color: var(--sec);
   border-radius: 8px;
 }
 
@@ -92,7 +110,7 @@ body {
   left: 0;
   right: 0;
   overflow-y: auto;
-  padding: 10px 0 150px;
+  padding: 10px 0 100px;
 }
 
 .todoWrapper {
@@ -100,7 +118,8 @@ body {
   margin: 10px 15px;
   overflow: hidden;
   border-radius: 16px;
-  border: 1px solid #3A3E40;
+  border: 1px solid var(--bd);
+	will-change: transform;
 }
 
 .deleteBtn {
@@ -109,13 +128,14 @@ body {
   right: 0;
   width: 100px;
   height: 100%;
-  background: #2E1717;
-  border-left: 1px solid #3A3E40;
-  color: #FF4640;
+  background: var(--del-bg);
+  border-left: 1px solid var(--bd);
+  color: var(--del-txt);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 0; /* Под todoItem */
+	will-change: transform;
 }
 
 .todoItem {
@@ -123,7 +143,7 @@ body {
   align-items: center;
   height: 100%;
   background: #232526;
-  padding: 0 15px;
+  padding: 0 56px 0 15px;
   gap: 10px;
   transition: transform 0.3s ease;
   position: relative;
@@ -139,7 +159,7 @@ body {
   appearance: none;
   width: 20px;
   height: 20px;
-  border: 1px solid #0A84FF;
+  border: 1px solid var(--pri);
   border-radius: 6px;
   position: relative;
   cursor: pointer;
@@ -148,8 +168,8 @@ body {
 }
 
 .todoCheckbox:checked {
-  background-color: #C2F970;
-  border-color: #C2F970;
+  background-color: var(--sec);
+  border-color: var(--sec);
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='18 8 9 17 4 12' /%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: 2px center;
@@ -159,6 +179,7 @@ body {
 .todoInput {
   flex: 1;
   border: none;
+	border-radius: 0;
   font-size: 16px;
   outline: none;
   background: none;
@@ -167,8 +188,8 @@ body {
   line-height: 1.4;
 	height: auto;
   min-height: 48px;
-	padding: 13px 6px 11px;
-	caret-color: #C2F970;
+	padding: 13px 3px 11px;
+	caret-color: var(--sec);
 }
 
 .todoInput.checked {
@@ -190,6 +211,8 @@ body {
 
 .todoItem.sorting .sortIcon {
   display: block;
+	position: absolute;
+	right: 15px;
 }
 
 .popup {
@@ -210,12 +233,13 @@ body {
 }
 
 .popupBox {
-  background: #0C0D0D;
-  border: 1px solid #3A3E40;
+  background: var(--bg);
+  border: 1px solid var(--bd);
   padding: 30px;
   border-radius: 16px;
   text-align: center;
   color: white;
+	font-size: 16px;
 }
 
 .popupButtons {
@@ -228,7 +252,7 @@ body {
 .popupButtons button {
   background: #232526;
   color: white;
-  border: 1px solid #3A3E40;
+  border: 1px solid var(--bd);
   padding: 8px 16px;
   border-radius: 8px;
   font-size: 16px;
@@ -236,7 +260,7 @@ body {
 }
 
 #confirmDelete {
-	background: #2E1717;
-  color: #FF4640;
-	border: 1px solid #FF4640;
+	background: var(--del-bg);
+  color: var(--del-txt);
+	border: 1px solid var(--del-bd);
 }
