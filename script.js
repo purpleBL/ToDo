@@ -56,7 +56,7 @@ function createTodoElement(todo) {
   input.value = todo.text || '';
   input.rows = 1;
   input.spellcheck = false;
-  input.maxlength = 200;
+  input.maxLength = 200;
 
   if (todo.height) {
     input.style.height = `${todo.height}px`;
