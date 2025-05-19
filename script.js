@@ -19,6 +19,10 @@ const confirmPopup = document.getElementById('confirmPopup');
 const confirmDelete = document.getElementById('confirmDelete');
 const cancelDelete = document.getElementById('cancelDelete');
 
+const addShortText = document.getElementById('addShortText');
+const addStandard = document.getElementById('addStandard');
+const addNoCheckbox = document.getElementById('addNoCheckbox');
+
 let sortable = null;
 let dragEnabled = false;
 
@@ -26,10 +30,14 @@ function saveTodosToStorage() {
   const todos = [];
   document.querySelectorAll('.todoWrapper').forEach(wrapper => {
     const input = wrapper.querySelector('.todoInput');
-    const checked = wrapper.querySelector('.todoCheckbox').checked;
+    const checkbox = wrapper.querySelector('.todoCheckbox');
+    const checked = checkbox ? checkbox.checked : false;
     const text = input.value;
     const height = input.scrollHeight;
-    todos.push({ text, checked, height });
+    const hasCheckbox = !!checkbox;
+    const maxLength = input.maxLength;
+    const blockType = wrapper.dataset.type || 'standard';
+    todos.push({ text, checked, height, hasCheckbox, maxLength, blockType });
   });
   localStorage.setItem('todos', JSON.stringify(todos));
 }
@@ -37,6 +45,12 @@ function saveTodosToStorage() {
 function createTodoElement(todo) {
   const wrapper = document.createElement('div');
   wrapper.className = 'todoWrapper';
+  wrapper.dataset.type = todo.blockType || 'standard';
+
+  // Добавляем стили в зависимости от типа блока
+  if (todo.blockType === 'short') wrapper.classList.add('shortTextBlock');
+  if (todo.blockType === 'noCheckbox') wrapper.classList.add('noCheckboxBlock');
+  if (todo.blockType === 'standard') wrapper.classList.add('standardBlock');
 
   const deleteBtn = document.createElement('div');
   deleteBtn.className = 'deleteBtn';
@@ -45,10 +59,21 @@ function createTodoElement(todo) {
   const item = document.createElement('div');
   item.className = 'todoItem';
 
-  const checkbox = document.createElement('input');
-  checkbox.type = 'checkbox';
-  checkbox.className = 'todoCheckbox';
-  checkbox.checked = todo.checked;
+  let checkbox = null;
+  if (todo.hasCheckbox) {
+    checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.className = 'todoCheckbox';
+    checkbox.checked = todo.checked;
+
+    checkbox.addEventListener('change', () => {
+      input.classList.toggle('checked', checkbox.checked);
+      input.readOnly = checkbox.checked || dragEnabled;
+      saveTodosToStorage();
+    });
+
+    item.appendChild(checkbox);
+  }
 
   const input = document.createElement('textarea');
   input.className = 'todoInput';
@@ -56,7 +81,7 @@ function createTodoElement(todo) {
   input.value = todo.text || '';
   input.rows = 1;
   input.spellcheck = false;
-  input.maxLength = 200;
+  input.maxLength = todo.maxLength || 200;
 
   if (todo.height) {
     input.style.height = `${todo.height}px`;
@@ -71,11 +96,10 @@ function createTodoElement(todo) {
     saveTodosToStorage();
   });
 
-  checkbox.addEventListener('change', () => {
-    input.classList.toggle('checked', checkbox.checked);
-    input.readOnly = checkbox.checked || dragEnabled;
-    saveTodosToStorage();
-  });
+  if (todo.checked) {
+    input.classList.add('checked');
+    input.readOnly = true;
+  }
 
   const sortIcon = document.createElement('div');
   sortIcon.className = 'sortIcon';
@@ -88,35 +112,25 @@ function createTodoElement(todo) {
     </svg>
   `;
 
-  if (checkbox.checked) {
-    input.classList.add('checked');
-    input.readOnly = true;
-  }
-
-  item.appendChild(checkbox);
   item.appendChild(input);
   item.appendChild(sortIcon);
   wrapper.appendChild(item);
   wrapper.appendChild(deleteBtn);
   todoList.prepend(wrapper);
 
-  // Swipe события
   let startX = 0;
   let isSwiped = false;
 
   item.addEventListener('touchstart', e => {
     if (dragEnabled) return;
-
     const touch = e.touches[0];
     const rect = item.getBoundingClientRect();
     const touchX = touch.clientX;
     const startInSwipeZone = touchX >= rect.right - 56;
-
     if (!startInSwipeZone) {
       item.dataset.swipeAllowed = 'false';
       return;
     }
-
     startX = touchX;
     isSwiped = item.classList.contains('swiped');
     item.dataset.swipeAllowed = 'true';
@@ -124,10 +138,8 @@ function createTodoElement(todo) {
 
   item.addEventListener('touchmove', e => {
     if (dragEnabled || item.dataset.swipeAllowed !== 'true') return;
-
     const currentX = e.touches[0].clientX;
     const diff = startX - currentX;
-
     if (diff > 50 && !isSwiped) {
       item.classList.add('swiped');
       isSwiped = true;
@@ -138,13 +150,11 @@ function createTodoElement(todo) {
     }
   });
 
-  // Клик мышкой в зону удаления
   item.addEventListener('click', e => {
     if (dragEnabled) return;
     const rect = item.getBoundingClientRect();
     const clickX = e.clientX;
     const isInSwipeZone = clickX >= rect.right - 56;
-
     if (isInSwipeZone) {
       item.classList.toggle('swiped');
     } else {
@@ -184,19 +194,57 @@ function updateButtonsState() {
   clearAllBtn.style.cursor = hasItems ? 'pointer' : 'not-allowed';
 }
 
-function createTodoItem() {
+// === Создание задач ===
+
+function createTodoItem(options = {}) {
   if (dragEnabled) return;
-  const todo = { text: '', checked: false, height: 48 };
+  const todo = {
+    text: '',
+    checked: false,
+    height: 42,
+    hasCheckbox: options.hasCheckbox ?? true,
+    maxLength: options.maxLength ?? 200,
+    blockType: options.blockType ?? 'standard'
+  };
   const wrapper = createTodoElement(todo);
-  todoList.prepend(wrapper);
   const input = wrapper.querySelector('.todoInput');
   input.focus();
   updateButtonsState();
   saveTodosToStorage();
 }
 
-addBtn.addEventListener('click', createTodoItem);
+// === Открытие / Закрытие выбора типа ===
+addBtn.addEventListener('click', () => {
+  if (dragEnabled) return;
 
+  addBtn.classList.toggle('rotate');
+  const topBar = document.querySelector('.topBar');
+  topBar.classList.toggle('open');
+
+  const isOpen = topBar.classList.contains('open');
+
+  clearAllBtn.disabled = isOpen;
+  clearAllBtn.style.opacity = isOpen ? '0.1' : '1';
+  clearAllBtn.style.cursor = isOpen ? 'not-allowed' : 'pointer';
+	
+	toggleDragBtn.disabled = isOpen;
+	toggleDragBtn.style.opacity = isOpen ? '0.1' : '1';
+  toggleDragBtn.style.cursor = isOpen ? 'not-allowed' : 'pointer';
+});
+
+addShortText.addEventListener('click', () => {
+  createTodoItem({ hasCheckbox: false, maxLength: 30, blockType: 'short' });
+});
+
+addStandard.addEventListener('click', () => {
+  createTodoItem({ hasCheckbox: true, maxLength: 200, blockType: 'standard' });
+});
+
+addNoCheckbox.addEventListener('click', () => {
+  createTodoItem({ hasCheckbox: false, maxLength: 200, blockType: 'noCheckbox' });
+});
+
+// === Сортировка ===
 toggleDragBtn.addEventListener('click', () => {
   dragEnabled = !dragEnabled;
   toggleDragBtn.classList.toggle('sortingActive', dragEnabled);
@@ -206,8 +254,8 @@ toggleDragBtn.addEventListener('click', () => {
     const checkbox = item.querySelector('.todoCheckbox');
     item.classList.toggle('sorting', dragEnabled);
     item.classList.remove('swiped');
-    input.readOnly = dragEnabled || checkbox.checked;
-    checkbox.disabled = dragEnabled;
+    input.readOnly = dragEnabled || (checkbox && checkbox.checked);
+    if (checkbox) checkbox.disabled = dragEnabled;
   });
 
   if (dragEnabled) {
@@ -237,6 +285,7 @@ toggleDragBtn.addEventListener('click', () => {
   }
 });
 
+// === Очистка ===
 clearAllBtn.addEventListener('click', () => {
   if (dragEnabled) return;
   confirmPopup.classList.remove('hidden');
@@ -253,5 +302,6 @@ confirmDelete.addEventListener('click', () => {
   saveTodosToStorage();
 });
 
+// === Инициализация ===
 updateButtonsState();
 loadTodosFromStorage();
