@@ -45,10 +45,9 @@ body {
 .topBar {
 	width: 240px;
   display: flex;
-  justify-content: space-between;
+	flex-direction: column;
+  justify-content: end;
   align-items: center;
-  padding: 10px 24px;
-  margin: 20px 0 0;
   position: fixed;
 	transform: translateX(-50%);
 	left: 50%;
@@ -59,6 +58,7 @@ body {
   backdrop-filter: blur(8px);
   border-radius: 26px;
   border: 1px solid var(--bd);
+	transition: .2s cubic-bezier(0.66, 0, 0.34, 1);
 }
 
 .topBar button {
@@ -68,16 +68,53 @@ body {
   padding: 0;
 }
 
+.topBar.open {
+	height: 156px;
+}
+
+.topBar.open .topIcons {
+	opacity: 1;
+	pointer-events: auto;
+	transform: scaleY(1);
+}
+
+.topIcons {
+	pointer-events: none;
+	opacity: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 20px;
+	border-bottom: 1px solid var(--bd);
+	padding: 15px 0;
+	width: 100%;
+	transform: scaleY(0);
+	transform-origin: bottom;
+	transition: .2s cubic-bezier(0.66, 0, 0.34, 1) .05s;
+}
+
+.bottomIcons {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 20px;
+	padding: 15px 0;
+	will-change: transform;
+}
+
 #addBtn,
 #toggleDragBtn,
-#clearAllBtn {
+#clearAllBtn,
+#addShortText,
+#addStandard,
+#addNoCheckbox {
   background: none;
   border: none;
-  border-radius: 8px;
   width: 48px;
   height: 48px;
   cursor: pointer;
 	color: white;
+	will-change: transform;
 }
 
 #addBtn {
@@ -85,11 +122,17 @@ body {
   border: 1px solid var(--bd);
   border-radius: 50%;
 	color: var(--pri);
+	transform: rotate(0);
+	transition: transform .2s cubic-bezier(0.66, 0, 0.34, 1);
+}
+
+#addBtn.rotate {
+  transform: rotate(45deg);
+	
 }
 
 #toggleDragBtn.sortingActive {
   color: var(--sec);
-  border-radius: 8px;
 }
 
 #toggleDragBtn .sortIconActive {
@@ -111,12 +154,12 @@ body {
   left: 0;
   right: 0;
   overflow-y: auto;
-  padding: 10px 0 150px;
+  padding: 10px 0 156px;
 }
 
 .todoWrapper {
   position: relative;
-  margin: 10px 15px;
+  margin: 4px 15px;
   overflow: hidden;
   border-radius: 16px;
   border: 1px solid var(--bd);
@@ -154,6 +197,38 @@ body {
 
 .todoItem.swiped {
   transform: translateX(-100px);
+}
+
+.shortTextBlock .todoInput {
+  font-size: 24px;
+	font-weight: bold;
+	min-height: 60px;
+	line-height: 1.4;
+	color: var(--sec);
+}
+
+.shortTextBlock.todoWrapper {
+	margin-top: 10px;
+}
+
+.shortTextBlock .todoItem {
+	padding-left: 8px;
+	border-left: 4px solid var(--bd);
+}
+
+.noCheckboxBlock .todoInput {
+	font-size: 13px;
+	color: #888;
+	min-height: 42px;
+}
+
+.noCheckboxBlock .todoItem {
+	padding-left: 8px;
+	border-left: 4px solid var(--bd);
+}
+
+.standardBlock {
+  
 }
 
 .todoCheckbox {
@@ -244,7 +319,7 @@ body {
 }
 
 .popupButtons {
-  margin-top: 20px;
+	margin-top: 20px;
   display: flex;
   gap: 20px;
   justify-content: center;
