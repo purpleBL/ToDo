@@ -4,41 +4,104 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>ToDo</title>
-	<link rel="manifest" href="manifest.json" />
-	<link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
+  <link rel="manifest" href="manifest.json" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
   <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
 </head>
 <body>
   <div class="container">
     <div class="topBar">
-      <button id="clearAllBtn">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" width="24" height="24" stroke-width="2">
-          <path d="M4 7h16"></path>
-          <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"></path>
-          <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"></path>
-          <path d="M10 12l4 4m0 -4l-4 4"></path>
-        </svg>
-      </button>
-      <button id="addBtn">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" width="24" height="24" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" stroke="currentColor">
-          <path d="M12 5l0 14"></path>
-          <path d="M5 12l14 0"></path>
-        </svg>
-      </button>
-      <button id="toggleDragBtn">
-				<svg class="sortIconDefault" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" width="24" height="24" stroke-width="2">
-  <path d="M3 9l4 -4l4 4m-4 -4v14"></path>
-  <path d="M21 15l-4 4l-4 -4m4 4v-14"></path>
-</svg>
-        <svg class="sortIconActive" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" width="24" height="24" stroke-width="2">
-          <path d="M5 12l5 5l10 -10"></path>
-        </svg>
-      </button>
+			<div class="topIcons">
+				<button id="addShortText">
+					<svg
+					  xmlns="http://www.w3.org/2000/svg"
+					  width="24"
+					  height="24"
+					  viewBox="0 0 24 24"
+					  fill="none"
+					  stroke="currentColor"
+					  stroke-width="2"
+					  stroke-linecap="round"
+					  stroke-linejoin="round"
+					>
+					  <path d="M7 12h10" />
+					  <path d="M7 5v14" />
+					  <path d="M17 5v14" />
+					  <path d="M15 19h4" />
+					  <path d="M15 5h4" />
+					  <path d="M5 19h4" />
+					  <path d="M5 5h4" />
+					</svg>
+	      </button>
+	      <button id="addStandard">
+					<svg
+					  xmlns="http://www.w3.org/2000/svg"
+					  width="24"
+					  height="24"
+					  viewBox="0 0 24 24"
+					  fill="none"
+					  stroke="currentColor"
+					  stroke-width="2"
+					  stroke-linecap="round"
+					  stroke-linejoin="round"
+					>
+					  <path d="M9 11l3 3l8 -8" />
+					  <path d="M20 12v6a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h9" />
+					</svg>
+	      </button>
+	      <button id="addNoCheckbox">
+					<svg
+					  xmlns="http://www.w3.org/2000/svg"
+					  width="24"
+					  height="24"
+					  viewBox="0 0 24 24"
+					  fill="none"
+					  stroke="currentColor"
+					  stroke-width="2"
+					  stroke-linecap="round"
+					  stroke-linejoin="round"
+					>
+					  <path d="M5 3m0 2a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v14a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2z" />
+					  <path d="M9 7l6 0" />
+					  <path d="M9 11l6 0" />
+					  <path d="M9 15l4 0" />
+					</svg>
+	      </button>
+			</div>
+			<div class="bottomIcons">
+	      <button id="clearAllBtn" title="Очистить все">
+	        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" width="24" height="24" stroke-width="2">
+	          <path d="M4 7h16"></path>
+	          <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"></path>
+	          <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"></path>
+	          <path d="M10 12l4 4m0 -4l-4 4"></path>
+	        </svg>
+	      </button>
+	
+	      <button id="addBtn" title="Добавить новый блок">
+	        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" width="24" height="24" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" stroke="currentColor">
+	          <path d="M12 5l0 14"></path>
+	          <path d="M5 12l14 0"></path>
+	        </svg>
+	      </button>
+	
+	      <button id="toggleDragBtn" title="Перемещение">
+	        <svg class="sortIconDefault" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" width="24" height="24" stroke-width="2">
+	          <path d="M3 9l4 -4l4 4m-4 -4v14"></path>
+	          <path d="M21 15l-4 4l-4 -4m4 4v-14"></path>
+	        </svg>
+	        <svg class="sortIconActive" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" width="24" height="24" stroke-width="2" >
+	          <path d="M5 12l5 5l10 -10"></path>
+	        </svg>
+	      </button>
+			</div>
     </div>
+
     <div id="todoList"></div>
   </div>
 
+  <!-- Попап подтверждения удаления всех -->
   <div id="confirmPopup" class="popup hidden">
     <div class="popupBox">
       <p>Удалить всё? 😬</p>
