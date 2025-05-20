@@ -311,3 +311,32 @@ confirmDelete.addEventListener('click', () => {
 // === Инициализация ===
 updateButtonsState();
 loadTodosFromStorage();
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/service-worker.js').then(registration => {
+      registration.addEventListener('updatefound', () => {
+        const newWorker = registration.installing;
+        newWorker.addEventListener('statechange', () => {
+          if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+            showUpdateBanner();
+          }
+        });
+      });
+    });
+  });
+}
+
+function showUpdateBanner() {
+  const banner = document.createElement('div');
+  banner.className = 'updateBanner';
+  banner.innerHTML = `
+    <span>Обновление доступно</span>
+    <button id="refreshBtn">Обновить</button>
+  `;
+  document.body.appendChild(banner);
+
+  document.getElementById('refreshBtn').addEventListener('click', () => {
+    window.location.reload(true);
+  });
+}
