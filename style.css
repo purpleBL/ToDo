@@ -174,7 +174,7 @@ body {
 #todoList {
   overflow-y: scroll;
   height: 100%;
-  padding: 10px 0 206px;
+  padding: 10px 0 212px;
   margin-right: -17px;
   padding-right: 17px;
   position: relative;
@@ -234,8 +234,8 @@ body {
 }
 
 .shortTextBlock .todoItem {
-	padding-left: 7px;
-	border-left: 4px solid var(--bd);
+	padding-left: 11px;
+	border-top: 2px solid var(--pri);
 }
 
 .noCheckboxBlock .todoInput {
@@ -250,7 +250,6 @@ body {
 
 .noCheckboxBlock .todoItem {
 	padding-left: 12px;
-	border-left: 0px solid var(--pri);
 }
 
 .standardBlock.todoWrapper {
