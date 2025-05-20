@@ -239,7 +239,7 @@ addBtn.addEventListener('click', () => {
 });
 
 addShortText.addEventListener('click', () => {
-  createTodoItem({ hasCheckbox: false, maxLength: 100, blockType: 'short' });
+  createTodoItem({ hasCheckbox: false, maxLength: 200, blockType: 'short' });
 });
 
 addStandard.addEventListener('click', () => {
@@ -247,7 +247,7 @@ addStandard.addEventListener('click', () => {
 });
 
 addNoCheckbox.addEventListener('click', () => {
-  createTodoItem({ hasCheckbox: false, maxLength: 200, blockType: 'noCheckbox' });
+  createTodoItem({ hasCheckbox: false, maxLength: 600, blockType: 'noCheckbox' });
 });
 
 // === Сортировка ===
