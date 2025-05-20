@@ -185,13 +185,18 @@ function loadTodosFromStorage() {
 }
 
 function updateButtonsState() {
+  const topBar = document.querySelector('.topBar');
+  const topBarOpen = topBar.classList.contains('open');
   const hasItems = todoList.querySelectorAll('.todoWrapper').length > 0;
-  toggleDragBtn.disabled = !hasItems;
-  clearAllBtn.disabled = !hasItems;
-  toggleDragBtn.style.opacity = hasItems ? '1' : '0.1';
-  clearAllBtn.style.opacity = hasItems ? '1' : '0.1';
-  toggleDragBtn.style.cursor = hasItems ? 'pointer' : 'not-allowed';
-  clearAllBtn.style.cursor = hasItems ? 'pointer' : 'not-allowed';
+
+  const shouldEnable = hasItems && !topBarOpen;
+
+  toggleDragBtn.disabled = !shouldEnable;
+  clearAllBtn.disabled = !shouldEnable;
+  toggleDragBtn.style.opacity = shouldEnable ? '1' : '0.1';
+  clearAllBtn.style.opacity = shouldEnable ? '1' : '0.1';
+  toggleDragBtn.style.cursor = shouldEnable ? 'pointer' : 'not-allowed';
+  clearAllBtn.style.cursor = shouldEnable ? 'pointer' : 'not-allowed';
 }
 
 // === Создание задач ===
@@ -220,6 +225,7 @@ addBtn.addEventListener('click', () => {
   addBtn.classList.toggle('rotate');
   const topBar = document.querySelector('.topBar');
   topBar.classList.toggle('open');
+	updateButtonsState();
 
   const isOpen = topBar.classList.contains('open');
 
