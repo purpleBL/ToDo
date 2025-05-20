@@ -12,9 +12,9 @@
 
   --bd: #3A3E40;
 	
-	--del-bg: #291414;
-	--del-bd: #421A1A;
-	--del-txt: #CC2929;
+	--del-bg: #2E1612;
+	--del-bd: #4D1E15;
+	--del-txt: #FF6347;
 }
 
 * {
@@ -182,7 +182,7 @@ body {
 
 .todoWrapper {
   position: relative;
-  margin: 4px 10px;
+  margin: 4px 15px;
   overflow: hidden;
   border-radius: 16px;
   border: 1px solid var(--bd);
