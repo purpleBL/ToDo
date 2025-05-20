@@ -235,7 +235,7 @@ body {
 
 .shortTextBlock .todoItem {
 	padding-left: 7px;
-	border-left: 4px solid salmon;
+	border-left: 4px solid var(--bd);
 }
 
 .noCheckboxBlock .todoInput {
