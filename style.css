@@ -1,5 +1,5 @@
 :root {
-  --pri: coral;
+  --pri: MediumSlateBlue;
 	
   --sec: #C2F970;
 
@@ -174,7 +174,7 @@ body {
 #todoList {
   overflow-y: scroll;
   height: 100%;
-  padding: 10px 0 136px;
+  padding: 10px 0 206px;
   margin-right: -17px;
   padding-right: 17px;
   position: relative;
@@ -182,7 +182,7 @@ body {
 
 .todoWrapper {
   position: relative;
-  margin: 4px 15px;
+  margin: 4px 10px;
   overflow: hidden;
   border-radius: 16px;
   border: 1px solid var(--bd);
@@ -230,15 +230,12 @@ body {
 }
 
 .shortTextBlock.todoWrapper {
-	margin-top: 20px;
-	
+	margin-top: 10px;
 }
 
 .shortTextBlock .todoItem {
-	padding-left: 11px;
-	border-left: 4px solid var(--pri);
-	border-top: 2px solid var(--bd);
-	
+	padding-left: 7px;
+	border-left: 4px solid var(--bd);
 }
 
 .noCheckboxBlock .todoInput {
