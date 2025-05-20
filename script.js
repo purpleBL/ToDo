@@ -233,7 +233,7 @@ addBtn.addEventListener('click', () => {
 });
 
 addShortText.addEventListener('click', () => {
-  createTodoItem({ hasCheckbox: false, maxLength: 30, blockType: 'short' });
+  createTodoItem({ hasCheckbox: false, maxLength: 100, blockType: 'short' });
 });
 
 addStandard.addEventListener('click', () => {
