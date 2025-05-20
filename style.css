@@ -1,5 +1,5 @@
 :root {
-  --pri: MediumSlateBlue;
+  --pri: coral;
 	
   --sec: #C2F970;
 
@@ -7,7 +7,7 @@
   --txt-inv: #fff;
 
   --bg: #111212;
-	--bg-80: #111212CC;
+	--bg-90: #111212E6;
 	--bg-sec: #212121;
 
   --bd: #3A3E40;
@@ -51,9 +51,9 @@ body {
   position: fixed;
 	transform: translateX(-50%);
 	left: 50%;
-  bottom: 68px;
+  bottom: 48px;
   height: 80px;
-  background: var(--bg-80);
+  background: var(--bg-90);
   z-index: 10;
   backdrop-filter: blur(8px);
   border-radius: 26px;
@@ -76,6 +76,20 @@ body {
 	opacity: 1;
 	pointer-events: auto;
 	transform: scaleY(1);
+}
+
+.topBarOverlay {
+	content: '';
+	width: 100%;
+	height: 170px;
+	position: absolute;
+	bottom: 0;
+	background: linear-gradient(180deg,rgba(0, 0, 0, 0) 0%, var(--bg-90) 90%);
+	-webkit-mask-image: linear-gradient(to bottom,transparent 0%,black 70%);
+	mask-image: linear-gradient(to bottom,transparent 0%,black 70%);
+	backdrop-filter: blur(2px);
+	z-index: 9;
+	pointer-events: none;
 }
 
 .topIcons {
@@ -147,14 +161,23 @@ body {
   display: inline;
 }
 
-#todoList {
+.todoScrollWrapper {
   position: absolute;
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
-  overflow-y: auto;
-  padding: 10px 0 156px;
+  overflow: hidden;
+  z-index: 0;
+}
+
+#todoList {
+  overflow-y: scroll;
+  height: 100%;
+  padding: 10px 0 136px;
+  margin-right: -17px;
+  padding-right: 17px;
+  position: relative;
 }
 
 .todoWrapper {
@@ -204,30 +227,36 @@ body {
 	font-weight: bold;
 	min-height: 60px;
 	line-height: 1.4;
-	color: var(--sec);
 }
 
 .shortTextBlock.todoWrapper {
-	margin-top: 10px;
+	margin-top: 20px;
+	
 }
 
 .shortTextBlock .todoItem {
-	padding-left: 8px;
-	border-left: 4px solid var(--bd);
+	padding-left: 11px;
+	border-left: 4px solid var(--pri);
+	border-top: 2px solid var(--bd);
+	
 }
 
 .noCheckboxBlock .todoInput {
-	font-size: 13px;
+	font-size: 14px;
 	color: #888;
 	min-height: 42px;
 }
 
-.noCheckboxBlock .todoItem {
-	padding-left: 8px;
-	border-left: 4px solid var(--bd);
+.noCheckboxBlock.todoWrapper {
+	
 }
 
-.standardBlock {
+.noCheckboxBlock .todoItem {
+	padding-left: 12px;
+	border-left: 0px solid var(--pri);
+}
+
+.standardBlock.todoWrapper {
   
 }
 
