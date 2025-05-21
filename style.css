@@ -262,7 +262,7 @@ body {
   appearance: none;
   width: 20px;
   height: 20px;
-  border: 1px solid var(--sec);
+  border: 1px solid #708090;
   border-radius: 6px;
   position: relative;
   cursor: pointer;
