@@ -32,6 +32,7 @@ html, body {
   font-family: sans-serif;
   background: var(--bg);
   user-select: none;
+  -webkit-user-select: none;
   touch-action: none;
   -webkit-tap-highlight-color: transparent;
   overscroll-behavior: none;
