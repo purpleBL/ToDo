@@ -96,7 +96,7 @@ body {
 
 #logoIcon {
 	background-image: url("tiger.svg");
-	background-size: contain;
+	background-size: 32px;
 	background-repeat: no-repeat;
 	background-position: center;
 	border: 1px solid var(--pri);
