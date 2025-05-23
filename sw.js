@@ -1,4 +1,4 @@
-const CACHE_NAME = 'todo-cache-v10';
+const CACHE_NAME = 'todo-cache-v11';
 const urlsToCache = [
   '/',
   '/index.html',
@@ -6,7 +6,8 @@ const urlsToCache = [
   '/script.js',
   '/manifest.json',
   '/icon-192.png',
-  '/icon-512.png'
+  '/icon-512.png',
+  '/tiger.svg'
 ];
 
 self.addEventListener('install', event => {
