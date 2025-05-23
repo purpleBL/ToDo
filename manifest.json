@@ -1,6 +1,6 @@
 {
-  "name": "ToDo",
-  "short_name": "ToDo",
+  "name": "TickTiger",
+  "short_name": "TickTiger",
   "start_url": "./",
   "display": "standalone",
   "background_color": "#111212",
