@@ -340,3 +340,9 @@ function showUpdateBanner() {
     window.location.reload(true);
   });
 }
+
+const rightBtn = document.getElementById("rightBtn");
+
+rightBtn.addEventListener("click", () => {
+  document.documentElement.classList.toggle("light");
+});
