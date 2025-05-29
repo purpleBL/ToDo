@@ -347,12 +347,16 @@ const metaThemeColor = document.querySelector("meta[name=theme-color]");
 rightBtn.addEventListener("click", () => {
   const isLight = document.documentElement.classList.toggle("light");
 
-  // Установи нужный цвет под статус-бар
+  // Сначала меняем фон body
   if (isLight) {
-    metaThemeColor.setAttribute("content", "#e3e3e3"); // светлый фон
     document.body.style.backgroundColor = "#e3e3e3";
+    requestAnimationFrame(() => {
+      metaThemeColor.setAttribute("content", "#e3e3e3");
+    });
   } else {
-    metaThemeColor.setAttribute("content", "#111212"); // тёмный фон
     document.body.style.backgroundColor = "#111212";
+    requestAnimationFrame(() => {
+      metaThemeColor.setAttribute("content", "#111212");
+    });
   }
 });
